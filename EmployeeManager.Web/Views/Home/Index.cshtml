@@ -16,13 +16,13 @@
     <div class="sidebar">
         <ul>
             <li ng-repeat="employee in employees" ng-class="{'active-employee' : currentEmployee.EmployeeNo == employee.EmployeeNo }"
-                ng-click="setCurrentEmployee(employee)">{{employee.FirstName}}</li>
+                ng-click="setCurrentEmployee(employee)">{{employee.FirstName}} {{employee.LastName}}</li>
         </ul>
     </div>
     <div class="content">
         <h1>{{currentEmployee.FirstName}} {{currentEmployee.LastName}}</h1>
         <p>{{currentEmployee.Title}} at {{currentEmployee.CompanyName}}</p>
-        <p>${{currentEmployee.Salary}}/month</p>
+        <p id="moneyContainer"><span id="money">${{currentEmployee.Salary}}</span>/month</p>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular-route.min.js"></script>
