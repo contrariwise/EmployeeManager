@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using EmployeeManager.Domain;
 using EmployeeManager.Domain.ViewModels;
+using Newtonsoft.Json;
 
 namespace EmployeeManager.Data
 {
@@ -41,25 +43,51 @@ namespace EmployeeManager.Data
             });
         }
 
+        //Jag tror inte att koden för att anropa tjänsten ska vara här, men jag är osäker på var den ska vara
+        //Här skulle jag be om hjälp från en senior
         public EmployeeViewModel Get(int id)
         {
             EmployeeViewModel viewModel = null;
             Employee employee = context.Employees.FirstOrDefault(e => e.EmployeeId == id);
+            String endpoint = "http://novacompanysvc.azurewebsites.net/api/companies/" + id;
+            var client = new WebClient();
+
+            Company company = new Company();
+            try
+            {
+                company = JsonConvert.DeserializeObject<Company>(client.DownloadString(endpoint));
+            }
+            catch
+            {
+                company.Name = "Unkown";
+            }
 
             if (employee != null)
             {
-                return new EmployeeViewModel()
-                {
-                    CompanyName = "Acme",
-                    EmployeeNo = employee.EmployeeNo,
-                    FirstName = employee.FirstName,
-                    LastName = employee.LastName,
-                    Title = employee.Title,
-                    Salary = employee.Salary
-                };
+                viewModel = new EmployeeViewModel()
+                            {
+                                CompanyName = company.Name,
+                                EmployeeNo = employee.EmployeeNo,
+                                FirstName = employee.FirstName,
+                                LastName = employee.LastName,
+                                Title = employee.Title,
+                                Salary = employee.Salary
+                            };
             }
             return viewModel;
         }
              
+    }
+
+    public class Company
+    {
+        public int CompanyId { get; set; }
+
+        private string name;
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
     }
 }
