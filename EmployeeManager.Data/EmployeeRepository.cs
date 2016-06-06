@@ -37,7 +37,7 @@ namespace EmployeeManager.Data
         {
             return context.Employees.Select(e => new EmployeeNameViewModel
             {
-                EmployeeId = e.EmployeeId,
+                EmployeeNo = e.EmployeeId,
                 FirstName = e.FirstName,
                 LastName = e.LastName
             });
@@ -49,21 +49,23 @@ namespace EmployeeManager.Data
         {
             EmployeeViewModel viewModel = null;
             Employee employee = context.Employees.FirstOrDefault(e => e.EmployeeId == id);
-            String endpoint = "http://novacompanysvc.azurewebsites.net/api/companies/" + id;
-            var client = new WebClient();
-
-            Company company = new Company();
-            try
-            {
-                company = JsonConvert.DeserializeObject<Company>(client.DownloadString(endpoint));
-            }
-            catch
-            {
-                company.Name = "Unkown";
-            }
 
             if (employee != null)
             {
+                String endpoint = "http://novacompanysvc.azurewebsites.net/api/companies/" + employee.CompanyId;
+                var client = new WebClient();
+
+                Company company = new Company();
+                try
+                {
+                    company = JsonConvert.DeserializeObject<Company>(client.DownloadString(endpoint));
+                }
+                catch
+                {
+                    company.Name = "Unknown";
+                }
+
+
                 viewModel = new EmployeeViewModel()
                             {
                                 CompanyName = company.Name,

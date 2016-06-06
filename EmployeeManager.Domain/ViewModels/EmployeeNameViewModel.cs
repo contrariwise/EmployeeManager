@@ -7,7 +7,7 @@ namespace EmployeeManager.Domain.ViewModels
 {
     public class EmployeeNameViewModel
     {
-        public int EmployeeId { get; set; }
+        public int EmployeeNo { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }
