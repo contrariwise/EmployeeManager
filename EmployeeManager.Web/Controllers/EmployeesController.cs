@@ -32,7 +32,7 @@ namespace EmployeeManager.Web.Controllers
                 throw new HttpResponseException(response);
             }
 
-            return Request.CreateResponse<Employee>(HttpStatusCode.OK, employee);
+            return Request.CreateResponse(HttpStatusCode.OK, employee);
         }
 
         public HttpResponseMessage Get()
@@ -41,7 +41,7 @@ namespace EmployeeManager.Web.Controllers
 
             if (employees != null && employees.Any())
             {
-                return Request.CreateResponse<IEnumerable<Employee>>(HttpStatusCode.OK, employees);
+                return Request.CreateResponse(HttpStatusCode.OK, employees);
             }
 
             throw new HttpResponseException(HttpStatusCode.NotFound);

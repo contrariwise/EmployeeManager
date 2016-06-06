@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using EmployeeManager.Domain;
+using EmployeeManager.Domain.ViewModels;
 
 namespace EmployeeManager.Data
 {
@@ -29,14 +31,35 @@ namespace EmployeeManager.Data
             GC.SuppressFinalize(this);
         }
 
-        public IEnumerable<Employee> GetAllEmployees()
+        public IEnumerable<EmployeeNameViewModel> GetAllEmployees()
         {
-            return context.Employees;
+            return context.Employees.Select(e => new EmployeeNameViewModel
+            {
+                EmployeeId = e.EmployeeId,
+                FirstName = e.FirstName,
+                LastName = e.LastName
+            });
         }
 
-        public Employee Get(int id)
+        public EmployeeViewModel Get(int id)
         {
-            return context.Employees.FirstOrDefault(e => e.EmployeeId == id);
+            EmployeeViewModel viewModel = null;
+            Employee employee = context.Employees.FirstOrDefault(e => e.EmployeeId == id);
+
+            if (employee != null)
+            {
+                return new EmployeeViewModel()
+                {
+                    CompanyName = "Acme",
+                    EmployeeNo = employee.EmployeeNo,
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    Title = employee.Title,
+                    Salary = employee.Salary
+                };
+            }
+            return viewModel;
         }
+             
     }
 }
