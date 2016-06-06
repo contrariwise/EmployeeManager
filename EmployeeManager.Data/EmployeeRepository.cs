@@ -48,7 +48,7 @@ namespace EmployeeManager.Data
         public EmployeeViewModel Get(int id)
         {
             EmployeeViewModel viewModel = null;
-            Employee employee = context.Employees.FirstOrDefault(e => e.EmployeeId == id);
+            Employee employee = context.Employees.FirstOrDefault(e => e.EmployeeNo == id);
 
             if (employee != null)
             {

@@ -28,8 +28,7 @@ namespace EmployeeManager.Web.Controllers
             var employee = repository.Get(id);
             if (employee == null)
             {
-                var response = Request.CreateResponse(HttpStatusCode.NotFound, "Employee not found");
-                throw new HttpResponseException(response);
+                return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Employee not found");
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, employee);
@@ -44,7 +43,7 @@ namespace EmployeeManager.Web.Controllers
                 return Request.CreateResponse(HttpStatusCode.OK, employees);
             }
 
-            throw new HttpResponseException(HttpStatusCode.NotFound);
+            return Request.CreateErrorResponse(HttpStatusCode.NotFound, "Employee not found");
         }
 
         protected override void Dispose(bool disposing)
